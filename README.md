@@ -83,14 +83,26 @@ Data diambil dari [JSONPlaceholder](https://jsonplaceholder.typicode.com):
 
 ## 🤖 AI Disclosure
 
-Project ini dibuat dengan bantuan **AI coding assistant** (Antigravity by Google DeepMind) untuk:
+Project ini dibuat dengan bantuan **AI coding assistant** untuk mempercepat proses development. Berikut adalah prompt yang digunakan selama pengembangan:
 
-- Setup project dan konfigurasi
-- Implementasi komponen React
-- Styling dan desain UI
-- Debugging dan optimasi performa
+### Prompts yang Digunakan
 
-Semua kode telah di-review dan disesuaikan sesuai kebutuhan project.
+| No  | Prompt                                                                                                                                                                         | Tujuan                                      |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------- |
+| 1   | _"Buatkan project menggunakan Vite dengan React sebagai framework utama"_                                                                                                      | Inisialisasi dan setup project              |
+| 2   | _"Gunakan warna primary violet dan hitam, terapkan efek glass blur bergaya iOS/iPhone tanpa menggunakan gradient"_                                                             | Menentukan arah desain visual               |
+| 3   | _"Tambahkan switch untuk mode gelap dan terang, serta ubah dropdown filter pengguna menjadi blur bergaya iPhone"_                                                              | Implementasi fitur tema dan komponen custom |
+| 4   | _"Perbaiki dropdown agar tidak tertutup oleh card postingan, improve mode terang agar lebih user-friendly dan tidak monoton, pastikan mobile-first dan performa tetap ringan"_ | Bug fix, UX improvement, dan responsivitas  |
+| 5   | _"Optimasi perpindahan tema agar tidak lag atau berat saat switching"_                                                                                                         | Optimasi performa rendering                 |
+| 6   | _"Dropdown filter harus memiliki efek blur yang nyata seperti iPhone, bukan sekadar transparan"_                                                                               | Penyempurnaan komponen frosted glass        |
+| 7   | _"Ubah keseluruhan layout agar lebih premium dan estetis bergaya iOS — dari tata letak, tipografi, hingga interaksi harus terasa user-friendly"_                               | Redesign menyeluruh untuk kualitas visual   |
+| 8   | _"Gunakan ikon bergaya iOS SF Symbols, bukan emoji"_                                                                                                                           | Konsistensi visual dengan desain iOS        |
+
+### Catatan
+
+- AI digunakan sebagai alat bantu (tool), bukan sebagai pengganti pemahaman teknis
+- Seluruh output AI telah di-review, diuji, dan disesuaikan sesuai kebutuhan project
+- Keputusan desain dan arsitektur tetap ditentukan oleh developer
 
 ## 📝 Lisensi
 
