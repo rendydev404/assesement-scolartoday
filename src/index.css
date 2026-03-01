@@ -1,0 +1,205 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== iOS THEME VARIABLES ===== */
+:root {
+  --bg: #000000;
+  --bg-secondary: #1c1c1e;
+  --bg-tertiary: #2c2c2e;
+  --bg-glass: rgba(28, 28, 30, 0.75);
+  --bg-glass-solid: rgba(38, 38, 40, 0.92);
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.14);
+  --text-1: #ffffff;
+  --text-2: rgba(255, 255, 255, 0.7);
+  --text-3: rgba(255, 255, 255, 0.4);
+  --text-4: rgba(255, 255, 255, 0.2);
+  --shadow: 0 2px 16px rgba(0, 0, 0, 0.25);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.4);
+  --violet: #8b5cf6;
+  --violet-soft: rgba(139, 92, 246, 0.12);
+  --violet-glow: rgba(139, 92, 246, 0.06);
+  --nav-bg: rgba(0, 0, 0, 0.8);
+  --card-hover-lift: 0 8px 30px rgba(139, 92, 246, 0.08);
+  --dropdown-bg: rgba(44, 44, 46, 0.94);
+  --dropdown-border: rgba(255, 255, 255, 0.12);
+  --dropdown-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
+  --dropdown-divider: rgba(255, 255, 255, 0.06);
+  --dropdown-hover-bg: rgba(255, 255, 255, 0.06);
+}
+
+[data-theme="light"] {
+  --bg: #f2f2f7;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #e5e5ea;
+  --bg-glass: rgba(255, 255, 255, 0.7);
+  --bg-glass-solid: rgba(255, 255, 255, 0.94);
+  --border: rgba(0, 0, 0, 0.05);
+  --border-strong: rgba(0, 0, 0, 0.1);
+  --text-1: #000000;
+  --text-2: rgba(0, 0, 0, 0.6);
+  --text-3: rgba(0, 0, 0, 0.35);
+  --text-4: rgba(0, 0, 0, 0.15);
+  --shadow: 0 1px 4px rgba(0, 0, 0, 0.04), 0 4px 16px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.08);
+  --violet: #7c3aed;
+  --violet-soft: rgba(124, 58, 237, 0.08);
+  --violet-glow: rgba(124, 58, 237, 0.04);
+  --nav-bg: rgba(242, 242, 247, 0.8);
+  --card-hover-lift: 0 8px 28px rgba(124, 58, 237, 0.06), 0 2px 8px rgba(0,0,0,0.04);
+  --dropdown-bg: rgba(255, 255, 255, 0.96);
+  --dropdown-border: rgba(0, 0, 0, 0.06);
+  --dropdown-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.02) inset;
+  --dropdown-divider: rgba(0, 0, 0, 0.05);
+  --dropdown-hover-bg: rgba(0, 0, 0, 0.03);
+}
+
+@layer base {
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background-color: var(--bg);
+    color: var(--text-1);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+  }
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(139, 92, 246, 0.2); border-radius: 10px; }
+  ::selection { background: rgba(139, 92, 246, 0.3); color: #fff; }
+}
+
+@layer components {
+  /* iOS frosted glass panel */
+  .ios-panel {
+    background: var(--bg-glass);
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    box-shadow: var(--shadow);
+  }
+
+  /* iOS-style card */
+  .ios-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .ios-card:hover {
+    transform: translateY(-3px) scale(1.005);
+    box-shadow: var(--card-hover-lift);
+  }
+
+  /* iOS pill search */
+  .ios-search {
+    width: 100%;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 13px 16px 13px 42px;
+    color: var(--text-1);
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .ios-search::placeholder { color: var(--text-4); }
+  .ios-search:focus {
+    border-color: var(--violet);
+    box-shadow: 0 0 0 3px var(--violet-soft);
+  }
+
+  /* iOS buttons */
+  .ios-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 20px;
+    background: var(--violet);
+    color: #fff;
+    font-weight: 600;
+    font-size: 14px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.15s ease, transform 0.1s ease;
+  }
+
+  .ios-btn:hover { opacity: 0.88; }
+  .ios-btn:active { transform: scale(0.97); }
+
+  .ios-btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 18px;
+    background: var(--violet-soft);
+    color: var(--violet);
+    font-weight: 600;
+    font-size: 14px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.15s ease;
+  }
+
+  .ios-btn-secondary:hover { opacity: 0.8; }
+
+  .ios-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--text-3);
+    font-weight: 500;
+    font-size: 14px;
+    padding: 8px 14px;
+    border-radius: 12px;
+    transition: color 0.15s ease, background 0.15s ease;
+    cursor: pointer;
+    text-decoration: none;
+    background: transparent;
+    border: none;
+  }
+
+  .ios-link:hover {
+    color: var(--text-1);
+    background: var(--violet-soft);
+  }
+
+  /* Badges */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 3px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    border-radius: 20px;
+    letter-spacing: 0.02em;
+  }
+
+  .badge-subtle {
+    background: var(--violet-soft);
+    color: var(--violet);
+  }
+
+  .badge-muted {
+    background: rgba(128, 128, 128, 0.1);
+    color: var(--text-3);
+  }
+}
+
+/* Mobile-first */
+@media (max-width: 640px) {
+  .ios-panel { border-radius: 16px; }
+  .ios-card { border-radius: 14px; }
+  .ios-search { font-size: 16px; padding: 12px 14px 12px 38px; }
+}
