@@ -29,6 +29,11 @@
   --dropdown-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
   --dropdown-divider: rgba(255, 255, 255, 0.06);
   --dropdown-hover-bg: rgba(255, 255, 255, 0.06);
+  --thread-line-color: rgba(255, 255, 255, 0.1);
+  --thread-hover-bg: rgba(255, 255, 255, 0.03);
+  --action-hover: rgba(255, 255, 255, 0.08);
+  --like-color: #ff3b6e;
+  --repost-color: #34d399;
 }
 
 [data-theme="light"] {
@@ -55,6 +60,11 @@
   --dropdown-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.12), 0 0 0 1px rgba(0, 0, 0, 0.02) inset;
   --dropdown-divider: rgba(0, 0, 0, 0.05);
   --dropdown-hover-bg: rgba(0, 0, 0, 0.03);
+  --thread-line-color: rgba(0, 0, 0, 0.1);
+  --thread-hover-bg: rgba(0, 0, 0, 0.02);
+  --action-hover: rgba(0, 0, 0, 0.05);
+  --like-color: #ef4444;
+  --repost-color: #059669;
 }
 
 @layer base {
@@ -195,6 +205,252 @@
     background: rgba(128, 128, 128, 0.1);
     color: var(--text-3);
   }
+
+  /* ===== THREADS-STYLE COMPONENTS ===== */
+
+  /* Thread post container */
+  .thread-post {
+    display: flex;
+    gap: 12px;
+    padding: 16px 0;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .thread-post:hover {
+    background: var(--thread-hover-bg);
+  }
+
+  /* Left column: avatar + thread line */
+  .thread-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40px;
+    flex-shrink: 0;
+  }
+
+  /* Thread avatar */
+  .thread-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    background: var(--violet);
+    flex-shrink: 0;
+    position: relative;
+  }
+
+  .thread-avatar-sm {
+    width: 28px;
+    height: 28px;
+    font-size: 10px;
+  }
+
+  .thread-avatar-lg {
+    width: 44px;
+    height: 44px;
+    font-size: 15px;
+  }
+
+  /* Vertical thread line */
+  .thread-line {
+    width: 2px;
+    flex: 1;
+    background: var(--thread-line-color);
+    border-radius: 1px;
+    margin-top: 8px;
+    min-height: 16px;
+  }
+
+  /* Right column: content */
+  .thread-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* Thread header row */
+  .thread-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 4px;
+  }
+
+  .thread-username {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-1);
+    text-decoration: none;
+  }
+
+  .thread-handle {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--text-3);
+    margin-left: 4px;
+  }
+
+  .thread-time {
+    font-size: 12px;
+    color: var(--text-4);
+    flex-shrink: 0;
+  }
+
+  /* Thread body text */
+  .thread-body {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--text-2);
+    margin-bottom: 12px;
+    white-space: pre-line;
+    word-break: break-word;
+  }
+
+  /* Thread image */
+  .thread-image {
+    width: 100%;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    max-height: 300px;
+    object-fit: cover;
+  }
+
+  /* Thread action bar */
+  .thread-actions {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    margin-left: -8px;
+  }
+
+  .thread-action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 6px 10px;
+    border-radius: 20px;
+    border: none;
+    background: transparent;
+    color: var(--text-3);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-decoration: none;
+  }
+
+  .thread-action-btn:hover {
+    background: var(--action-hover);
+    color: var(--text-2);
+  }
+
+  .thread-action-btn.liked {
+    color: var(--like-color);
+  }
+
+  .thread-action-btn.reposted {
+    color: var(--repost-color);
+  }
+
+  /* Thread divider between posts */
+  .thread-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0;
+  }
+
+  /* Thread feed wrapper */
+  .thread-feed {
+    max-width: 580px;
+    margin: 0 auto;
+  }
+
+  /* Thread detail post (larger for detail page) */
+  .thread-detail-post {
+    padding: 20px 0;
+  }
+
+  .thread-detail-post .thread-body {
+    font-size: 15px;
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+
+  .thread-detail-post .thread-avatar {
+    width: 44px;
+    height: 44px;
+    font-size: 15px;
+  }
+
+  /* Stats row */
+  .thread-stats {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 4px;
+  }
+
+  .thread-stat {
+    font-size: 13px;
+    color: var(--text-3);
+  }
+
+  .thread-stat strong {
+    color: var(--text-1);
+    font-weight: 600;
+  }
+
+  /* Reply thread styling */
+  .thread-reply {
+    display: flex;
+    gap: 12px;
+    padding: 14px 0;
+  }
+
+  .thread-reply-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* More indicator avatars */
+  .thread-more-avatars {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 4px;
+  }
+
+  .thread-more-avatars .mini-avatar {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--bg-tertiary);
+    border: 1.5px solid var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 7px;
+    font-weight: 700;
+    color: var(--text-3);
+  }
+
+  .thread-more-avatars .mini-avatar:nth-child(2) {
+    margin-left: -4px;
+  }
 }
 
 /* Mobile-first */
@@ -202,4 +458,28 @@
   .ios-panel { border-radius: 16px; }
   .ios-card { border-radius: 14px; }
   .ios-search { font-size: 16px; padding: 12px 14px 12px 38px; }
+  .thread-feed { padding: 0 4px; }
+  .thread-post { padding: 14px 0; gap: 10px; }
+  .thread-left { width: 36px; }
+  .thread-avatar { width: 32px; height: 32px; font-size: 12px; }
+  .thread-detail-post .thread-avatar { width: 38px; height: 38px; font-size: 13px; }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease forwards;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.35s ease forwards;
 }

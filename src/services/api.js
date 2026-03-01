@@ -50,3 +50,35 @@ export async function fetchUserById(userId) {
   }
   return response.json();
 }
+
+/**
+ * Fetch all users
+ * @returns {Promise<Array>} Array of user objects
+ */
+export async function fetchAllUsers() {
+  const response = await fetch(`${BASE_URL}/users`);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch users: ${response.status}`);
+  }
+  return response.json();
+}
+
+/**
+ * Fetch photos for a specific album (we use postId as albumId for demo)
+ * Uses picsum.photos for reliable image loading since via.placeholder.com is often down
+ * @param {number|string} albumId - Album ID (mapped from post)
+ * @returns {Promise<Array>} Array of photo objects with working URLs
+ */
+export async function fetchPhotosByAlbumId(albumId) {
+  const response = await fetch(`${BASE_URL}/photos?albumId=${albumId}&_limit=1`);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch photos: ${response.status}`);
+  }
+  const photos = await response.json();
+  // Replace broken via.placeholder.com URLs with picsum.photos
+  return photos.map((photo) => ({
+    ...photo,
+    url: `https://picsum.photos/seed/${photo.id}/600/400`,
+    thumbnailUrl: `https://picsum.photos/seed/${photo.id}/150/150`,
+  }));
+}

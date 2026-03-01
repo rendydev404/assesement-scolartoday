@@ -4,168 +4,151 @@ import {
   fetchPostById,
   fetchCommentsByPostId,
   fetchUserById,
+  fetchPhotosByAlbumId,
 } from "../services/api";
 import LoadingSpinner from "../components/LoadingSpinner";
 import ErrorMessage from "../components/ErrorMessage";
 
-/* iOS SF Symbol-style icons */
-const icons = {
-  back: (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2.2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <polyline points="15 18 9 12 15 6" />
-    </svg>
-  ),
-  forward: (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2.2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <polyline points="9 18 15 12 9 6" />
-    </svg>
-  ),
-  mail: (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <rect x="2" y="4" width="20" height="16" rx="2" />
-      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-    </svg>
-  ),
-  phone: (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-    </svg>
-  ),
-  globe: (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <circle cx="12" cy="12" r="10" />
-      <line x1="2" y1="12" x2="22" y2="12" />
-      <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-    </svg>
-  ),
-  building: (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="16"
-      height="16"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <rect x="4" y="2" width="16" height="20" rx="2" ry="2" />
-      <path d="M9 22v-4h6v4" />
-      <line x1="8" y1="6" x2="10" y2="6" />
-      <line x1="14" y1="6" x2="16" y2="6" />
-      <line x1="8" y1="10" x2="10" y2="10" />
-      <line x1="14" y1="10" x2="16" y2="10" />
-      <line x1="8" y1="14" x2="10" y2="14" />
-      <line x1="14" y1="14" x2="16" y2="14" />
-    </svg>
-  ),
-  person: (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="14"
-      height="14"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-      <circle cx="12" cy="7" r="4" />
-    </svg>
-  ),
-  chat: (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="14"
-      height="14"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-    </svg>
-  ),
-  tag: (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="12"
-      height="12"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M12 2H2v10l9.29 9.29c.94.94 2.48.94 3.42 0l6.58-6.58c.94-.94.94-2.48 0-3.42L12 2Z" />
-      <path d="M7 7h.01" />
-    </svg>
-  ),
-};
+/* Threads-style icons */
+const HeartIcon = ({ filled }) => (
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill={filled ? "currentColor" : "none"}
+    stroke="currentColor"
+    strokeWidth="1.8"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+  </svg>
+);
+
+const CommentIcon = () => (
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.8"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+  </svg>
+);
+
+const RepostIcon = () => (
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.8"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M17 1l4 4-4 4" />
+    <path d="M3 11V9a4 4 0 0 1 4-4h14" />
+    <path d="M7 23l-4-4 4-4" />
+    <path d="M21 13v2a4 4 0 0 1-4 4H3" />
+  </svg>
+);
+
+const ShareIcon = () => (
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.8"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+    <polyline points="16 6 12 2 8 6" />
+    <line x1="12" y1="2" x2="12" y2="15" />
+  </svg>
+);
+
+const BackIcon = () => (
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <path d="M19 12H5" />
+    <polyline points="12 19 5 12 12 5" />
+  </svg>
+);
+
+const MoreIcon = () => (
+  <svg
+    width="20"
+    height="20"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
+    <circle cx="12" cy="12" r="1" />
+    <circle cx="19" cy="12" r="1" />
+    <circle cx="5" cy="12" r="1" />
+  </svg>
+);
+
+// Avatar colors
+const avatarColors = [
+  "#8b5cf6",
+  "#3b82f6",
+  "#06b6d4",
+  "#10b981",
+  "#f59e0b",
+  "#ef4444",
+  "#ec4899",
+  "#8b5cf6",
+  "#6366f1",
+  "#14b8a6",
+];
+
+function getAvatarColor(userId) {
+  return avatarColors[(userId - 1) % avatarColors.length];
+}
+
+function getInitials(name) {
+  return name
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+}
+
+function getCommentAvatarColor(index) {
+  return avatarColors[index % avatarColors.length];
+}
 
 export default function PostDetailPage() {
   const { id } = useParams();
   const [post, setPost] = useState(null);
   const [user, setUser] = useState(null);
   const [comments, setComments] = useState([]);
+  const [photo, setPhoto] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [liked, setLiked] = useState(false);
+  const [likeCount, setLikeCount] = useState(0);
 
   const loadPostDetails = async () => {
     try {
@@ -173,12 +156,22 @@ export default function PostDetailPage() {
       setError(null);
       const postData = await fetchPostById(id);
       setPost(postData);
+      setLikeCount(Math.floor(Math.random() * 100) + 10);
+
       const [userData, commentsData] = await Promise.all([
         fetchUserById(postData.userId),
         fetchCommentsByPostId(id),
       ]);
       setUser(userData);
       setComments(commentsData);
+
+      // Try to fetch a photo
+      try {
+        const photos = await fetchPhotosByAlbumId(postData.userId);
+        if (photos.length > 0) setPhoto(photos[0]);
+      } catch {
+        // No photo available, that's fine
+      }
     } catch (err) {
       setError(err.message);
     } finally {
@@ -191,221 +184,318 @@ export default function PostDetailPage() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [id]);
 
+  const handleLike = () => {
+    setLiked(!liked);
+    setLikeCount((prev) => (liked ? prev - 1 : prev + 1));
+  };
+
   if (loading) return <LoadingSpinner text="Loading post..." />;
   if (error) return <ErrorMessage message={error} onRetry={loadPostDetails} />;
   if (!post) return <ErrorMessage message="Post not found" />;
 
-  const initials = user
-    ? user.name
-        .split(" ")
-        .map((n) => n[0])
-        .join("")
-        .slice(0, 2)
-        .toUpperCase()
-    : "??";
-
-  const authorInfo = user
-    ? [
-        { icon: icons.mail, label: "Email", value: user.email },
-        { icon: icons.phone, label: "Phone", value: user.phone },
-        { icon: icons.globe, label: "Website", value: user.website },
-        { icon: icons.building, label: "Company", value: user.company.name },
-      ]
-    : [];
+  const initials = user ? getInitials(user.name) : "??";
+  const repostCount = Math.floor(Number(id) / 2) + 3;
 
   return (
-    <div className="animate-fade-in max-w-3xl mx-auto pb-8">
-      {/* Back button - iOS style */}
-      <Link
-        to="/"
-        className="ios-link mb-4 inline-flex text-[13px]"
-        style={{ color: "var(--violet)", marginLeft: "-8px" }}
+    <div className="animate-fade-in thread-feed pb-8">
+      {/* Threads-style top bar */}
+      <div
+        className="flex items-center justify-between py-3"
+        style={{ borderBottom: "1px solid var(--border)" }}
       >
-        {icons.back}
-        Posts
-      </Link>
+        <Link
+          to="/"
+          className="thread-action-btn"
+          style={{ color: "var(--text-1)", padding: "6px" }}
+        >
+          <BackIcon />
+        </Link>
+        <span
+          className="text-[15px] font-semibold"
+          style={{ color: "var(--text-1)" }}
+        >
+          PostExplorer
+        </span>
+        <span
+          className="thread-action-btn"
+          style={{ color: "var(--text-3)", padding: "6px" }}
+        >
+          <MoreIcon />
+        </span>
+      </div>
 
-      {/* Article */}
-      <article className="ios-panel p-5 sm:p-8 mb-4">
-        <div className="flex items-center gap-2 mb-4">
-          <span className="badge badge-muted flex items-center gap-1">
-            {icons.tag}
-            <span>#{post.id}</span>
-          </span>
+      {/* Main Post - Threads style */}
+      <div className="thread-detail-post">
+        <div style={{ display: "flex", gap: "12px" }}>
+          {/* Avatar */}
+          <div className="thread-left" style={{ width: "auto" }}>
+            <div
+              className="thread-avatar thread-avatar-lg"
+              style={{
+                background: user ? getAvatarColor(user.id) : "var(--violet)",
+              }}
+            >
+              {initials}
+            </div>
+          </div>
+
+          {/* Content */}
+          <div className="thread-content">
+            {/* Header */}
+            <div className="thread-header" style={{ marginBottom: "2px" }}>
+              <div style={{ display: "flex", alignItems: "center" }}>
+                <span className="thread-username" style={{ fontSize: "15px" }}>
+                  {user ? user.name : "Unknown"}
+                </span>
+                {/* Verified badge */}
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="var(--violet)"
+                  style={{ marginLeft: "4px", flexShrink: 0 }}
+                >
+                  <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <span className="thread-time" style={{ fontSize: "13px" }}>
+                {Math.floor(Math.random() * 12) + 1}h
+              </span>
+            </div>
+
+            {user && (
+              <p
+                style={{
+                  fontSize: "13px",
+                  color: "var(--text-3)",
+                  marginBottom: "8px",
+                }}
+              >
+                @{user.username}
+              </p>
+            )}
+          </div>
         </div>
 
+        {/* Post title */}
         <h1
-          className="text-[20px] sm:text-[26px] font-bold leading-snug capitalize mb-4"
-          style={{ color: "var(--text-1)" }}
+          style={{
+            fontSize: "16px",
+            fontWeight: 700,
+            color: "var(--text-1)",
+            marginBottom: "8px",
+            marginTop: "12px",
+            textTransform: "capitalize",
+            lineHeight: 1.4,
+          }}
         >
           {post.title}
         </h1>
 
-        {/* Author inline */}
-        {user && (
-          <div
-            className="flex items-center gap-3 mb-5 pb-5"
-            style={{ borderBottom: "1px solid var(--border)" }}
-          >
-            <div
-              className="w-10 h-10 rounded-full flex items-center justify-center text-xs font-bold text-white flex-shrink-0"
-              style={{ background: "var(--violet)" }}
-            >
-              {initials}
-            </div>
-            <div>
-              <p
-                className="text-[14px] font-semibold"
-                style={{ color: "var(--text-1)" }}
-              >
-                {user.name}
-              </p>
-              <p className="text-[12px]" style={{ color: "var(--violet)" }}>
-                @{user.username}
-              </p>
-            </div>
-          </div>
-        )}
-
+        {/* Post body */}
         <p
-          className="text-[15px] leading-[1.75] whitespace-pre-line"
-          style={{ color: "var(--text-2)" }}
+          className="thread-body"
+          style={{ fontSize: "15px", lineHeight: 1.7 }}
         >
           {post.body}
         </p>
-      </article>
 
-      {/* Author Details */}
-      {user && (
-        <div className="ios-panel p-5 sm:p-6 mb-4">
-          <h2
-            className="text-[11px] font-bold uppercase tracking-[0.08em] mb-4 flex items-center gap-2"
-            style={{ color: "var(--text-3)" }}
-          >
-            <span style={{ color: "var(--text-4)" }}>{icons.person}</span>
-            About the Author
-          </h2>
+        {/* Post image */}
+        {photo && (
+          <img
+            src={photo.url}
+            alt={photo.title}
+            className="thread-image"
+            style={{ maxHeight: "400px" }}
+          />
+        )}
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {authorInfo.map((item) => (
-              <div
-                key={item.label}
-                className="flex items-center gap-3 p-3.5 rounded-xl"
-                style={{
-                  background: "var(--violet-glow)",
-                  border: "1px solid var(--border)",
-                }}
-              >
-                <div
-                  className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0"
-                  style={{
-                    background: "var(--violet-soft)",
-                    color: "var(--violet)",
-                  }}
-                >
-                  {item.icon}
-                </div>
-                <div className="min-w-0">
-                  <p
-                    className="text-[10px] font-semibold uppercase tracking-wider"
-                    style={{ color: "var(--text-4)" }}
-                  >
-                    {item.label}
-                  </p>
-                  <p
-                    className="text-[13px] font-medium truncate"
-                    style={{ color: "var(--text-2)" }}
-                  >
-                    {item.value}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Comments */}
-      <div className="ios-panel p-5 sm:p-6">
-        <div className="flex items-center justify-between mb-5">
-          <h2
-            className="text-[11px] font-bold uppercase tracking-[0.08em] flex items-center gap-2"
-            style={{ color: "var(--text-3)" }}
-          >
-            <span style={{ color: "var(--text-4)" }}>{icons.chat}</span>
-            Comments
-          </h2>
-          <span className="badge badge-subtle">{comments.length}</span>
+        {/* Stats row */}
+        <div className="thread-stats">
+          <span className="thread-stat">
+            <strong>{likeCount}</strong> likes
+          </span>
+          <span className="thread-stat">
+            <strong>{comments.length}</strong> replies
+          </span>
+          <span className="thread-stat">
+            <strong>{repostCount}</strong> reposts
+          </span>
         </div>
 
-        {comments.length === 0 ? (
-          <p
-            className="text-sm text-center py-10"
-            style={{ color: "var(--text-3)" }}
+        {/* Action bar */}
+        <div
+          className="thread-actions"
+          style={{
+            padding: "8px 0",
+            justifyContent: "space-around",
+            marginLeft: 0,
+            borderBottom: "1px solid var(--border)",
+          }}
+        >
+          <button
+            className={`thread-action-btn ${liked ? "liked" : ""}`}
+            onClick={handleLike}
           >
-            No comments yet.
-          </p>
-        ) : (
-          <div className="space-y-0">
-            {comments.map((comment, index) => (
+            <HeartIcon filled={liked} />
+          </button>
+          <span className="thread-action-btn">
+            <CommentIcon />
+          </span>
+          <span className="thread-action-btn">
+            <RepostIcon />
+          </span>
+          <span className="thread-action-btn">
+            <ShareIcon />
+          </span>
+        </div>
+      </div>
+
+      {/* Replies / Comments */}
+      {comments.length > 0 && (
+        <div>
+          {comments.map((comment, index) => (
+            <div key={comment.id}>
               <div
-                key={comment.id}
-                className="py-4 animate-fade-in-up"
+                className="thread-reply animate-fade-in-up"
                 style={{
-                  borderBottom:
-                    index < comments.length - 1
-                      ? "1px solid var(--border)"
-                      : "none",
-                  animationDelay: `${index * 50}ms`,
+                  animationDelay: `${index * 40}ms`,
                   opacity: 0,
                   animationFillMode: "forwards",
                 }}
               >
-                <div className="flex items-center gap-2.5 mb-2">
+                {/* Reply avatar + thread line */}
+                <div className="thread-left">
                   <div
-                    className="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold flex-shrink-0"
-                    style={{
-                      background: "var(--violet-soft)",
-                      color: "var(--violet)",
-                    }}
+                    className="thread-avatar thread-avatar-sm"
+                    style={{ background: getCommentAvatarColor(index) }}
                   >
                     {comment.name.charAt(0).toUpperCase()}
                   </div>
-                  <div className="min-w-0 flex-1">
-                    <p
-                      className="text-[13px] font-semibold capitalize truncate"
-                      style={{ color: "var(--text-1)" }}
+                  {index < comments.length - 1 && (
+                    <div className="thread-line" />
+                  )}
+                </div>
+
+                {/* Reply content */}
+                <div className="thread-reply-content">
+                  <div
+                    className="thread-header"
+                    style={{ marginBottom: "4px" }}
+                  >
+                    <div style={{ minWidth: 0 }}>
+                      <span
+                        className="thread-username"
+                        style={{
+                          fontSize: "13px",
+                          display: "block",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "nowrap",
+                          textTransform: "capitalize",
+                        }}
+                      >
+                        {comment.name}
+                      </span>
+                    </div>
+                    <span className="thread-time">
+                      {Math.floor(Math.random() * 8) + 1}h
+                    </span>
+                  </div>
+
+                  <p
+                    style={{
+                      fontSize: "13px",
+                      lineHeight: 1.55,
+                      color: "var(--text-2)",
+                      marginBottom: "8px",
+                    }}
+                  >
+                    {comment.body}
+                  </p>
+
+                  {/* Reply actions */}
+                  <div className="thread-actions" style={{ gap: "0" }}>
+                    <span
+                      className="thread-action-btn"
+                      style={{ padding: "4px 8px" }}
                     >
-                      {comment.name}
-                    </p>
+                      <HeartIcon filled={false} />
+                    </span>
+                    <span
+                      className="thread-action-btn"
+                      style={{ padding: "4px 8px" }}
+                    >
+                      <CommentIcon />
+                    </span>
+                    <span
+                      className="thread-action-btn"
+                      style={{ padding: "4px 8px" }}
+                    >
+                      <RepostIcon />
+                    </span>
+                    <span
+                      className="thread-action-btn"
+                      style={{ padding: "4px 8px" }}
+                    >
+                      <ShareIcon />
+                    </span>
                   </div>
                 </div>
-                <p
-                  className="text-[13px] leading-relaxed pl-[38px]"
-                  style={{ color: "var(--text-3)" }}
-                >
-                  {comment.body}
-                </p>
               </div>
-            ))}
-          </div>
-        )}
-      </div>
+              {index < comments.length - 1 && <hr className="thread-divider" />}
+            </div>
+          ))}
+        </div>
+      )}
 
       {/* Navigation */}
-      <div className="flex items-center justify-between mt-5">
+      <div
+        className="flex items-center justify-between mt-6 pt-4"
+        style={{ borderTop: "1px solid var(--border)" }}
+      >
         {Number(id) > 1 ? (
-          <Link to={`/post/${Number(id) - 1}`} className="ios-link text-[13px]">
-            {icons.back}
+          <Link
+            to={`/post/${Number(id) - 1}`}
+            className="ios-link text-[13px]"
+            style={{ color: "var(--violet)" }}
+          >
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6" />
+            </svg>
             Previous
           </Link>
         ) : (
           <div />
         )}
         {Number(id) < 100 && (
-          <Link to={`/post/${Number(id) + 1}`} className="ios-link text-[13px]">
+          <Link
+            to={`/post/${Number(id) + 1}`}
+            className="ios-link text-[13px]"
+            style={{ color: "var(--violet)" }}
+          >
             Next
-            {icons.forward}
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <polyline points="9 18 15 12 9 6" />
+            </svg>
           </Link>
         )}
       </div>
